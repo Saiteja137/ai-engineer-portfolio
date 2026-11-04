@@ -1,0 +1,1 @@
+AI Engineer portfolio website built with React, TypeScript, and Vite. Showcasing projects, skills, experience, and certifications.
