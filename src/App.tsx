@@ -1,462 +1,602 @@
 
-import "./App.css";
+import { useState } from 'react'
+import './App.css'
+
+const profile = {
+  name: 'Sai Teja Atkapuram',
+  role: 'AI Engineer',
+  experience: '1 Year Experience',
+  email: 'saitejaatkapuram7@gmail.com',
+  linkedin: 'https://www.linkedin.com/in/saitheja-atkapuram/',
+  github: 'https://github.com/Saiteja137',
+}
 
 const skills = [
-  "Python",
-  "TypeScript",
-  "FastAPI",
-  "LangChain",
-  "LangGraph",
-  "Agentic AI",
-  "RAG",
-  "Azure OpenAI",
-  "Vector Search",
-  "SQL",
-  "Docker",
-  "Git",
-  "GitHub",
-  "Streamlit",
-];
+  {
+    title: 'AI & Generative AI',
+    items: ['LLMs', 'Agentic AI', 'RAG', 'Prompt Engineering', 'AI Agents'],
+  },
+  {
+    title: 'Frameworks',
+    items: ['LangChain', 'LangGraph', 'FastAPI', 'Streamlit', 'Hugging Face'],
+  },
+  {
+    title: 'Cloud & Deployment',
+    items: ['Azure OpenAI', 'Azure AI Search', 'Docker', 'AKS', 'GitHub Actions'],
+  },
+  {
+    title: 'Programming & Data',
+    items: ['Python', 'TypeScript', 'SQL', 'PostgreSQL', 'FAISS'],
+  },
+]
 
 const projects = [
   {
-    number: "01",
-    title: "Agentic AI Enterprise Automation",
-    category: "Agentic AI · LangGraph · RAG",
+    number: '01',
+    title: 'Request Management Service',
+    subtitle: 'Agentic AI Enterprise Automation',
     description:
-      "Developed agentic AI workflows for enterprise request triage, investigation, knowledge retrieval, and resolution support using Python, LangGraph, FastAPI, and Azure OpenAI.",
-    technologies: ["Python", "LangGraph", "FastAPI", "Azure OpenAI"],
-    github: "https://github.com/Saiteja137",
+      'Worked on an AI-powered enterprise service that automates triage, enrichment, investigation, and resolution of service requests across Atlas and ServiceNow.',
+    technologies: [
+      'Python',
+      'FastAPI',
+      'LangChain',
+      'LangGraph',
+      'Azure OpenAI',
+      'RAG',
+      'PostgreSQL',
+      'Docker',
+      'AKS',
+    ],
+    highlights: [
+      'Contributed to 4 agentic AI workflows for enterprise request automation.',
+      'Implemented GPT-based tool calling for triage and investigation workflows.',
+      'Worked with enterprise knowledge sources including Atlas Knowledge Base, Confluence, and Azure AI Search.',
+      'Contributed to reusable AI skills and a Skills Sandbox for knowledge-driven automation.',
+      'Supported human-in-the-loop approvals through Microsoft Teams.',
+      'Worked on evaluation and observability using DeepEval, OpenTelemetry, and Azure Monitor.',
+      'Contributed to the end-to-end production release lifecycle, including 20 weekly production releases.',
+    ],
+    category: 'Professional Experience',
   },
   {
-    number: "02",
-    title: "SmartPDF QA Assistant",
-    category: "Generative AI · RAG",
+    number: '02',
+    title: 'SmartPDF QA Assistant',
+    subtitle: 'Retrieval-Augmented Generation',
     description:
-      "Built a document question-answering application that processes PDF files, retrieves relevant content using embeddings and FAISS, and generates contextual answers.",
-    technologies: ["Python", "LangChain", "FAISS", "Streamlit"],
-    github: "https://github.com/Saiteja137",
+      'Developed a document question-answering application that allows users to upload PDF files and ask questions using a retrieval-based AI workflow.',
+    technologies: [
+      'Python',
+      'Streamlit',
+      'LangChain',
+      'OpenAI',
+      'FAISS',
+      'PyPDF2',
+    ],
+    highlights: [
+      'Extracted and processed PDF content.',
+      'Created document chunks for retrieval.',
+      'Generated embeddings and stored them in FAISS.',
+      'Used a retrieval-based question-answering workflow to answer user queries.',
+    ],
+    category: 'Personal Project',
   },
   {
-    number: "03",
-    title: "Data Analytics Dashboard",
-    category: "Data Analytics · Visualization",
+    number: '03',
+    title: 'Data Analytics Dashboard',
+    subtitle: 'Interactive Data Exploration',
     description:
-      "Created an interactive dashboard to analyze CSV datasets, explore data patterns, and visualize insights using Python data processing and visualization libraries.",
-    technologies: ["Python", "Pandas", "Streamlit", "Matplotlib"],
-    github: "https://github.com/Saiteja137",
+      'Created a Streamlit dashboard for exploring CSV datasets and presenting useful data insights through interactive visualizations.',
+    technologies: ['Python', 'Streamlit', 'Pandas', 'Matplotlib'],
+    highlights: [
+      'Loaded and processed CSV datasets using Pandas.',
+      'Presented dataset summaries and visualizations.',
+      'Created an interactive interface for data exploration.',
+    ],
+    category: 'Personal Project',
   },
-];
+  {
+    number: '04',
+    title: 'Airline Tweet Sentiment Analysis',
+    subtitle: 'Natural Language Processing',
+    description:
+      'Built a sentiment analysis project using a pretrained transformer model to classify text sentiment.',
+    technologies: ['Python', 'Hugging Face', 'Transformers', 'NLP'],
+    highlights: [
+      'Used a pretrained DistilBERT sentiment pipeline.',
+      'Processed text input and generated sentiment predictions.',
+      'Explored transformer-based NLP inference.',
+    ],
+    category: 'Personal Project',
+  },
+]
+
+const certifications = [
+  {
+    name: 'Microsoft Certified: Azure AI Fundamentals',
+    detail: 'Microsoft',
+  },
+  {
+    name: 'Microsoft Certified: Azure Fundamentals',
+    detail: 'Microsoft',
+  },
+  {
+    name: 'NextGen AI — Agents in Action',
+    detail: 'UBS Certificate of Achievement',
+  },
+  {
+    name: 'Introduction to GitHub Copilot',
+    detail: 'GitHub',
+  },
+  {
+    name: 'Boost Your Productivity with GitHub Copilot',
+    detail: 'GitHub',
+  },
+  {
+    name: 'AI For Everyone',
+    detail: 'DeepLearning.AI',
+  },
+  {
+    name: 'GitLab CI Fundamentals',
+    detail: 'GitLab',
+  },
+  {
+    name: 'Agile Fundamentals',
+    detail: 'Professional Learning',
+  },
+]
 
 function App() {
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  const closeMenu = () => setMenuOpen(false)
+
   return (
     <div className="portfolio">
       <header className="navbar">
-        <a href="#home" className="logo">
-          ST<span>.</span>
+        <a href="#home" className="brand" onClick={closeMenu}>
+          <span className="brand-mark">ST</span>
+          <span>Sai Teja</span>
         </a>
 
-        <nav>
-          <a href="#about">About</a>
-          <a href="#skills">Skills</a>
-          <a href="#projects">Projects</a>
-          <a href="#experience">Experience</a>
-          <a href="#certifications">Certifications</a>
-          <a href="#contact" className="nav-contact">
-            Contact
+        <button
+          className="menu-toggle"
+          aria-label="Toggle navigation"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? '✕' : '☰'}
+        </button>
+
+        <nav className={menuOpen ? 'nav-links open' : 'nav-links'}>
+          {['About', 'Skills', 'Experience', 'Projects', 'Certifications', 'Contact'].map(
+            (item) => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                onClick={closeMenu}
+              >
+                {item}
+              </a>
+            ),
+          )}
+          <a
+            className="nav-cta"
+            href={profile.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            onClick={closeMenu}
+          >
+            Let's Connect ↗
           </a>
         </nav>
       </header>
 
       <main>
-        {/* HERO */}
         <section id="home" className="hero section-container">
           <div className="hero-content">
-            <p className="eyebrow">
-              <span className="status-dot"></span>
-              AI ENGINEER
-            </p>
+            <div className="availability">
+              <span className="availability-dot" />
+              AI ENGINEER · 1 YEAR EXPERIENCE
+            </div>
 
+            <p className="eyebrow">HELLO, I'M</p>
             <h1>
-              Building intelligent
-              <br />
-              systems with <span>AI.</span>
+              {profile.name}
+              <span className="hero-gradient">.</span>
             </h1>
 
+            <h2>
+              Building intelligent systems with{' '}
+              <span className="hero-gradient">Agentic AI</span>
+              <br />
+              and Generative AI.
+            </h2>
+
             <p className="hero-description">
-              Hi, I'm <strong>Sai Teja</strong> — an AI Engineer focused on
-              Agentic AI, Generative AI, RAG systems, and building practical
-              AI-powered applications.
+              AI Engineer focused on building AI-powered applications,
+              agentic workflows, retrieval-augmented generation, and
+              enterprise automation using modern AI frameworks and cloud
+              technologies.
             </p>
 
-            <div className="hero-buttons">
-              <a href="#projects" className="button button-primary">
-                Explore Projects ↗
+            <div className="hero-actions">
+              <a className="button button-primary" href="#projects">
+                Explore My Work <span>↗</span>
               </a>
-
-              <a href="#contact" className="button button-secondary">
-                Contact Me
-              </a>
-            </div>
-
-            <div className="hero-links">
               <a
-                href="https://github.com/Saiteja137"
+                className="button button-secondary"
+                href="/resume.pdf"
                 target="_blank"
                 rel="noreferrer"
               >
+                View Resume ↓
+              </a>
+            </div>
+
+            <div className="social-links">
+              <a href={profile.github} target="_blank" rel="noreferrer">
                 GitHub ↗
               </a>
-
-              <a
-                href="https://www.linkedin.com/in/saitheja-atkapuram/"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a href={profile.linkedin} target="_blank" rel="noreferrer">
                 LinkedIn ↗
               </a>
-
-              <a href="/resume.pdf" target="_blank" rel="noreferrer">
-                Resume ↗
-              </a>
+              <a href={`mailto:${profile.email}`}>Email ↗</a>
             </div>
           </div>
 
-          <div className="hero-card">
-            <div className="card-top">
-              <span>AI ENGINEER</span>
-              <span className="card-indicator">● AVAILABLE</span>
-            </div>
+          <div className="hero-visual">
+            <div className="visual-glow" />
+            <div className="orbit orbit-one" />
+            <div className="orbit orbit-two" />
 
-            <div className="code-window">
-              <div className="code-header">
-                <span></span>
-                <span></span>
-                <span></span>
-                <p>ai_engineer.py</p>
+            <div className="profile-card">
+              <div className="profile-card-top">
+                <span className="window-dot purple" />
+                <span className="window-dot blue" />
+                <span className="window-dot pink" />
+                <span className="card-label">AI ENGINEER</span>
               </div>
 
-              <pre>
-                <code>
-                  <span className="code-purple">class</span>{" "}
-                  <span className="code-green">AIEngineer</span>:
-                  {"\n"}
-                  {"  "}
-                  <span className="code-purple">def</span>{" "}
-                  <span className="code-blue">build</span>(self):
-                  {"\n"}
-                  {"    "}
-                  <span className="code-purple">return</span> [
-                  {"\n"}
-                  {"      "}
-                  <span className="code-orange">"Agentic AI"</span>,
-                  {"\n"}
-                  {"      "}
-                  <span className="code-orange">"RAG Systems"</span>,
-                  {"\n"}
-                  {"      "}
-                  <span className="code-orange">"Generative AI"</span>,
-                  {"\n"}
-                  {"      "}
-                  <span className="code-orange">"Intelligent Apps"</span>
-                  {"\n"}
-                  {"    "}]
-                </code>
-              </pre>
+              <div className="profile-avatar">ST</div>
+              <h3>Sai Teja</h3>
+              <p>Agentic AI · RAG · LLMs</p>
+
+              <div className="mini-stats">
+                <div>
+                  <strong>1+</strong>
+                  <span>Year Exp.</span>
+                </div>
+                <div>
+                  <strong>AI</strong>
+                  <span>Engineering</span>
+                </div>
+                <div>
+                  <strong>RAG</strong>
+                  <span>Applications</span>
+                </div>
+              </div>
+
+              <div className="profile-card-footer">
+                <span className="footer-status" />
+                Building AI solutions
+              </div>
             </div>
 
-            <div className="hero-card-footer">
-              <span>Python</span>
-              <span>LangGraph</span>
-              <span>Azure AI</span>
+            <div className="floating-chip chip-top">
+              <span>✦</span> LangGraph
+            </div>
+            <div className="floating-chip chip-bottom">
+              <span>⌘</span> RAG Systems
             </div>
           </div>
+
+          <a className="scroll-indicator" href="#about">
+            <span /> Scroll to explore
+          </a>
         </section>
 
-        {/* ABOUT */}
         <section id="about" className="section-container section-block">
           <div className="section-heading">
-            <p className="eyebrow">01 / ABOUT ME</p>
+            <span className="section-number">01 / ABOUT</span>
             <h2>
               Turning ideas into
               <br />
-              <span>intelligent solutions.</span>
+              <span className="hero-gradient">intelligent solutions.</span>
             </h2>
           </div>
 
-          <div className="about-content">
-            <p>
-              I'm an AI Engineer with approximately one year of professional
-              experience building AI-powered applications and intelligent
-              automation solutions.
-            </p>
+          <div className="about-grid">
+            <div className="about-copy">
+              <p>
+                I'm an AI Engineer with around one year of professional
+                experience working on AI-powered enterprise applications
+                and automation.
+              </p>
+              <p>
+                My work focuses on Agentic AI, Retrieval-Augmented
+                Generation (RAG), LLM integration, and building practical
+                AI workflows using Python, LangChain, LangGraph, FastAPI,
+                and Azure AI services.
+              </p>
+              <p>
+                At UBS, I contributed to an enterprise Request Management
+                Service designed to automate service request triage,
+                investigation, and resolution through AI agents and
+                knowledge-driven workflows.
+              </p>
+              <p>
+                I enjoy learning new AI technologies and turning them
+                into reliable, useful applications.
+              </p>
+            </div>
 
-            <p>
-              My work focuses on Agentic AI, Large Language Models, Retrieval
-              Augmented Generation, and developing reliable AI systems using
-              Python, LangChain, LangGraph, FastAPI, and Azure OpenAI.
-            </p>
-
-            <p>
-              I enjoy learning emerging AI technologies and transforming
-              technical concepts into practical applications that solve
-              real-world problems.
-            </p>
-
-            <div className="about-details">
-              <div>
-                <span>ROLE</span>
-                <strong>AI Engineer</strong>
+            <div className="about-cards">
+              <div className="info-card">
+                <span className="info-icon">⌘</span>
+                <span className="info-label">FOCUS</span>
+                <h3>Agentic AI & RAG</h3>
+                <p>Intelligent workflows and knowledge-based systems</p>
               </div>
-
-              <div>
-                <span>FOCUS</span>
-                <strong>Agentic AI & RAG</strong>
+              <div className="info-card">
+                <span className="info-icon">⚡</span>
+                <span className="info-label">EXPERIENCE</span>
+                <h3>1 Year</h3>
+                <p>AI engineering and enterprise automation</p>
               </div>
-
-              <div>
-                <span>LOCATION</span>
-                <strong>Hyderabad, India</strong>
+              <div className="info-card">
+                <span className="info-icon">◎</span>
+                <span className="info-label">LOCATION</span>
+                <h3>Hyderabad, India</h3>
+                <p>Open to AI engineering opportunities</p>
+              </div>
+              <div className="info-card">
+                <span className="info-icon">✧</span>
+                <span className="info-label">INTERESTS</span>
+                <h3>Generative AI</h3>
+                <p>LLMs, AI agents, cloud and automation</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* SKILLS */}
         <section id="skills" className="section-container section-block">
           <div className="section-heading">
-            <p className="eyebrow">02 / TECHNICAL SKILLS</p>
+            <span className="section-number">02 / SKILLS</span>
             <h2>
               Technologies I
               <br />
-              <span>work with.</span>
+              <span className="hero-gradient">work with.</span>
             </h2>
-          </div>
-
-          <div className="skills-content">
             <p className="section-description">
-              Tools and technologies I use to build AI applications,
-              intelligent workflows, and data-driven solutions.
+              Tools and technologies used to build AI applications,
+              intelligent workflows, and production-oriented solutions.
             </p>
-
-            <div className="skills-grid">
-              {skills.map((skill) => (
-                <div className="skill-item" key={skill}>
-                  <span className="skill-icon">✳</span>
-                  {skill}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* PROJECTS */}
-        <section id="projects" className="section-container section-block">
-          <div className="section-heading">
-            <p className="eyebrow">03 / SELECTED PROJECTS</p>
-            <h2>
-              Things I've
-              <br />
-              <span>built.</span>
-            </h2>
           </div>
 
-          <div className="projects-content">
-            {projects.map((project) => (
-              <article className="project-card" key={project.number}>
-                <div className="project-number">{project.number}</div>
-
-                <div className="project-details">
-                  <p className="project-category">{project.category}</p>
-
-                  <h3>{project.title}</h3>
-
-                  <p className="project-description">
-                    {project.description}
-                  </p>
-
-                  <div className="project-tech">
-                    {project.technologies.map((technology) => (
-                      <span key={technology}>{technology}</span>
-                    ))}
-                  </div>
-
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="project-link"
-                  >
-                    View on GitHub ↗
-                  </a>
+          <div className="skills-grid">
+            {skills.map((skill, index) => (
+              <article className="skill-card" key={skill.title}>
+                <div className="skill-card-top">
+                  <span className="skill-index">0{index + 1}</span>
+                  <span className="skill-symbol">✦</span>
                 </div>
-
-                <div className="project-arrow">↗</div>
+                <h3>{skill.title}</h3>
+                <div className="skill-tags">
+                  {skill.items.map((item) => (
+                    <span className="skill-tag" key={item}>
+                      {item}
+                    </span>
+                  ))}
+                </div>
               </article>
             ))}
           </div>
         </section>
 
-        {/* EXPERIENCE */}
         <section id="experience" className="section-container section-block">
           <div className="section-heading">
-            <p className="eyebrow">04 / EXPERIENCE</p>
+            <span className="section-number">03 / EXPERIENCE</span>
             <h2>
-              My professional
+              Where I've
               <br />
-              <span>journey.</span>
+              <span className="hero-gradient">made an impact.</span>
             </h2>
           </div>
 
-          <div className="experience-content">
-            <div className="experience-card">
-              <div className="experience-date">
-                PROFESSIONAL EXPERIENCE
-              </div>
-
-              <div className="experience-details">
+          <article className="experience-card">
+            <div className="experience-top">
+              <div>
+                <span className="experience-badge">PROFESSIONAL EXPERIENCE</span>
                 <h3>AI Engineer</h3>
                 <p className="company-name">UBS</p>
-
-                <p>
-                  Worked on AI-powered enterprise automation using Python,
-                  LangChain, LangGraph, RAG, and Azure OpenAI.
-                </p>
-
-                <ul>
-                  <li>
-                    Developed agentic workflows for request triage and
-                    investigation.
-                  </li>
-                  <li>
-                    Integrated enterprise knowledge retrieval with AI
-                    applications.
-                  </li>
-                  <li>
-                    Contributed to application development, testing,
-                    monitoring, and production releases.
-                  </li>
-                </ul>
-
-                <p className="experience-note">
-                  Project details are summarized without confidential
-                  implementation information.
-                </p>
               </div>
+              <span className="experience-duration">Around 1 Year</span>
             </div>
+
+            <div className="experience-divider" />
+
+            <h4>Request Management Service — Agentic AI Enterprise Automation</h4>
+            <p className="experience-description">
+              Contributed to an AI-powered enterprise service that
+              automates triage, enrichment, investigation, and resolution
+              of service requests across Atlas and ServiceNow.
+            </p>
+
+            <ul className="experience-list">
+              <li>
+                Worked on four agentic AI workflows using LangChain and
+                LangGraph for enterprise request automation.
+              </li>
+              <li>
+                Contributed to triage and investigation agents using
+                GPT-based tool and function calling.
+              </li>
+              <li>
+                Integrated retrieval workflows with Atlas Knowledge Base,
+                Confluence, and Azure AI Search.
+              </li>
+              <li>
+                Worked on reusable AI skills and knowledge-driven
+                automation capabilities.
+              </li>
+              <li>
+                Supported human-in-the-loop approvals through Microsoft
+                Teams and auditable execution workflows.
+              </li>
+              <li>
+                Contributed to evaluation and observability using
+                DeepEval, OpenTelemetry, and Azure Monitor.
+              </li>
+              <li>
+                Participated in end-to-end production release activities,
+                including 20 weekly production releases.
+              </li>
+            </ul>
+
+            <div className="experience-tech">
+              {[
+                'Python',
+                'FastAPI',
+                'LangChain',
+                'LangGraph',
+                'RAG',
+                'Azure OpenAI',
+                'PostgreSQL',
+                'Docker',
+                'AKS',
+              ].map((tech) => (
+                <span key={tech}>{tech}</span>
+              ))}
+            </div>
+          </article>
+        </section>
+
+        <section id="projects" className="section-container section-block">
+          <div className="section-heading">
+            <span className="section-number">04 / PROJECTS</span>
+            <h2>
+              Selected
+              <br />
+              <span className="hero-gradient">work.</span>
+            </h2>
+            <p className="section-description">
+              AI engineering projects focused on enterprise automation,
+              retrieval-based applications, and data-driven solutions.
+            </p>
+          </div>
+
+          <div className="projects-grid">
+            {projects.map((project) => (
+              <article className="project-card" key={project.number}>
+                <div className="project-card-top">
+                  <span className="project-number">{project.number}</span>
+                  <span className="project-category">{project.category}</span>
+                </div>
+
+                <div className="project-icon">
+                  {project.number === '01'
+                    ? '✧'
+                    : project.number === '02'
+                      ? '⌕'
+                      : project.number === '03'
+                        ? '▥'
+                        : '◎'}
+                </div>
+
+                <h3>{project.title}</h3>
+                <p className="project-subtitle">{project.subtitle}</p>
+                <p className="project-description">{project.description}</p>
+
+                <div className="project-highlights">
+                  <h4>Key Contributions</h4>
+                  <ul>
+                    {project.highlights.map((highlight) => (
+                      <li key={highlight}>{highlight}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="project-tech">
+                  {project.technologies.map((tech) => (
+                    <span key={tech}>{tech}</span>
+                  ))}
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 
-        {/* CERTIFICATIONS */}
         <section
           id="certifications"
           className="section-container section-block"
         >
           <div className="section-heading">
-            <p className="eyebrow">05 / CERTIFICATIONS</p>
+            <span className="section-number">05 / CERTIFICATIONS</span>
             <h2>
-              Learning and
+              Learning &
               <br />
-              <span>growth.</span>
+              <span className="hero-gradient">certifications.</span>
             </h2>
           </div>
 
-          <div className="certifications-content">
-            <div className="certification-item">
-              <span className="certification-number">01</span>
-              <div>
-                <h3>Microsoft Certified: Azure AI Fundamentals</h3>
-                <p>Microsoft · AI-900 / AI-901 credential as applicable</p>
-              </div>
-              <span className="certification-symbol">↗</span>
-            </div>
-
-            <div className="certification-item">
-              <span className="certification-number">02</span>
-              <div>
-                <h3>Microsoft Certified: Azure Fundamentals</h3>
-                <p>Microsoft · AZ-900</p>
-              </div>
-              <span className="certification-symbol">↗</span>
-            </div>
-
-            <div className="certification-item">
-              <span className="certification-number">03</span>
-              <div>
-                <h3>NextGen AI — Agents in Action</h3>
-                <p>UBS · Certificate of Achievement</p>
-              </div>
-              <span className="certification-symbol">↗</span>
-            </div>
-
-            <div className="certification-item">
-              <span className="certification-number">04</span>
-              <div>
-                <h3>GitHub Copilot Productivity</h3>
-                <p>GitHub · Learning certification</p>
-              </div>
-              <span className="certification-symbol">↗</span>
-            </div>
+          <div className="certifications-grid">
+            {certifications.map((cert, index) => (
+              <article className="cert-card" key={cert.name}>
+                <div className="cert-icon">✦</div>
+                <div className="cert-content">
+                  <span className="cert-number">
+                    CERTIFICATION / 0{index + 1}
+                  </span>
+                  <h3>{cert.name}</h3>
+                  <p>{cert.detail}</p>
+                </div>
+                <span className="cert-arrow">↗</span>
+              </article>
+            ))}
           </div>
         </section>
 
-        {/* CONTACT */}
-        <section id="contact" className="section-container contact-section">
-          <p className="eyebrow">06 / CONTACT</p>
+        <section id="contact" className="section-container section-block">
+          <div className="contact-panel">
+            <span className="section-number">06 / CONTACT</span>
+            <h2>
+              Let's build
+              <br />
+              something <span className="hero-gradient">intelligent.</span>
+            </h2>
+            <p>
+              Interested in AI engineering opportunities, Generative AI,
+              Agentic AI, or building practical AI applications?
+              Let's connect.
+            </p>
 
-          <h2>
-            Let's build
-            <br />
-            something <span>intelligent.</span>
-          </h2>
-
-          <p className="contact-description">
-            Interested in AI engineering, Agentic AI, or building
-            intelligent applications? Let's connect.
-          </p>
-
-          <a
-            href="mailto:Saitejaatkapuram7@gmail.com"
-            className="button button-primary contact-button"
-          >
-            Get in Touch ↗
-          </a>
-
-          <div className="contact-links">
-            <a
-              href="https://github.com/Saiteja137"
-              target="_blank"
-              rel="noreferrer"
-            >
-              GitHub ↗
+            <a className="button button-primary" href={`mailto:${profile.email}`}>
+              Get in Touch ↗
             </a>
 
-            <a
-              href="https://www.linkedin.com/in/saitheja-atkapuram/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              LinkedIn ↗
-            </a>
-
-            <a href="/resume.pdf" target="_blank" rel="noreferrer">
-              Resume ↗
-            </a>
+            <div className="contact-links">
+              <a href={profile.linkedin} target="_blank" rel="noreferrer">
+                LinkedIn ↗
+              </a>
+              <a href={profile.github} target="_blank" rel="noreferrer">
+                GitHub ↗
+              </a>
+              <a href={`mailto:${profile.email}`}>Email ↗</a>
+            </div>
           </div>
         </section>
       </main>
 
       <footer className="footer">
-        <a href="#home" className="footer-logo">
-          ST.
+        <a href="#home" className="footer-brand">
+          ST<span>.</span>
         </a>
-
-        <p>Designed & built by Sai Teja</p>
-
-        <p>© {new Date().getFullYear()} · AI Engineer</p>
+        <p>Designed & built by {profile.name}</p>
+        <p>© {new Date().getFullYear()} · AI Engineer Portfolio</p>
       </footer>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
