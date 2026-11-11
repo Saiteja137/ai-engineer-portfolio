@@ -1,65 +1,35 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-:root {
-  font-family: 'Inter', sans-serif;
-  color: #f1f5f9;
-  background: #080b14;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  font-optical-sizing: auto;
-  font-weight: 400;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 85px;
-}
-
-body {
-  min-width: 320px;
-  min-height: 100vh;
-  margin: 0;
-  background: #080b14;
-}
-
-body,
-button,
-input,
-textarea {
-  font-family: 'Inter', sans-serif;
-}
-
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-button {
-  font: inherit;
-}
-
-a {
-  color: inherit;
-}
-
-::selection {
-  color: #ffffff;
-  background: rgba(139, 92, 246, 0.5);
-}
-
 :focus-visible {
-  outline: 2px solid #a78bfa;
+  outline: 1px solid var(--red);
   outline-offset: 4px;
 }
 
-#root {
-  min-height: 100vh;
+.skip-link {
+  position: fixed;
+  z-index: 20;
+  top: 16px;
+  left: 16px;
+  padding: 12px 16px;
+  transform: translateY(-160%);
+  background: var(--red);
+  color: #fff;
+  font: 10px var(--mono);
+  letter-spacing: 0.08em;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

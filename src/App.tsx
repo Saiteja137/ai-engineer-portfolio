@@ -1,602 +1,649 @@
+import { useEffect, useState } from 'react';
+import {
+  ArrowDown,
+  ArrowUpRight,
+  Cpu,
+  Database,
+  Layers3,
+  Mail,
+  Menu,
+  Terminal,
+  Workflow,
+  X,
+  type LucideIcon,
+} from 'lucide-react';
+import { motion } from 'motion/react';
+import AnimatedArrow from './components/AnimatedArrow';
+import ArchitectureDiagram from './components/ArchitectureDiagram';
+import MagneticLink from './components/MagneticLink';
+import ParticleOrbit from './components/ParticleOrbit';
+import ScrollProgress from './components/ScrollProgress';
+import ScrollReveal from './components/ScrollReveal';
 
-import { useState } from 'react'
-import './App.css'
+type Project = {
+  number: string;
+  name: string;
+  type: string;
+  description: string;
+  stack: string[];
+  outcome: string;
+};
 
-const profile = {
-  name: 'Sai Teja Atkapuram',
-  role: 'AI Engineer',
-  experience: '1 Year Experience',
-  email: 'saitejaatkapuram7@gmail.com',
-  linkedin: 'https://www.linkedin.com/in/saitheja-atkapuram/',
-  github: 'https://github.com/Saiteja137',
-}
+type Capability = {
+  icon: LucideIcon;
+  title: string;
+  body: string;
+};
 
-const skills = [
-  {
-    title: 'AI & Generative AI',
-    items: ['LLMs', 'Agentic AI', 'RAG', 'Prompt Engineering', 'AI Agents'],
-  },
-  {
-    title: 'Frameworks',
-    items: ['LangChain', 'LangGraph', 'FastAPI', 'Streamlit', 'Hugging Face'],
-  },
-  {
-    title: 'Cloud & Deployment',
-    items: ['Azure OpenAI', 'Azure AI Search', 'Docker', 'AKS', 'GitHub Actions'],
-  },
-  {
-    title: 'Programming & Data',
-    items: ['Python', 'TypeScript', 'SQL', 'PostgreSQL', 'FAISS'],
-  },
-]
+type NavItem = {
+  id: string;
+  label: string;
+};
 
-const projects = [
+const email = 'saitejaatkapuram7@gmail.com';
+const resumeUrl = 'https://drive.google.com/file/d/1X90EbDy13GnJpyS0Lns3JieXERRUWbGa';
+
+const navItems: NavItem[] = [
+  { id: 'home', label: 'HOME' },
+  { id: 'about', label: 'ABOUT' },
+  { id: 'deployments', label: 'WORK' },
+  { id: 'system', label: 'SAAI' },
+  { id: 'matrix', label: 'MATRIX' },
+  { id: 'contact', label: 'CONTACT' },
+];
+
+const projects: Project[] = [
   {
     number: '01',
-    title: 'Request Management Service',
-    subtitle: 'Agentic AI Enterprise Automation',
+    name: 'Request Management Service',
+    type: 'AGENTIC AI · ENTERPRISE AUTOMATION',
     description:
-      'Worked on an AI-powered enterprise service that automates triage, enrichment, investigation, and resolution of service requests across Atlas and ServiceNow.',
-    technologies: [
-      'Python',
-      'FastAPI',
-      'LangChain',
-      'LangGraph',
-      'Azure OpenAI',
-      'RAG',
-      'PostgreSQL',
-      'Docker',
-      'AKS',
-    ],
-    highlights: [
-      'Contributed to 4 agentic AI workflows for enterprise request automation.',
-      'Implemented GPT-based tool calling for triage and investigation workflows.',
-      'Worked with enterprise knowledge sources including Atlas Knowledge Base, Confluence, and Azure AI Search.',
-      'Contributed to reusable AI skills and a Skills Sandbox for knowledge-driven automation.',
-      'Supported human-in-the-loop approvals through Microsoft Teams.',
-      'Worked on evaluation and observability using DeepEval, OpenTelemetry, and Azure Monitor.',
-      'Contributed to the end-to-end production release lifecycle, including 20 weekly production releases.',
-    ],
-    category: 'Professional Experience',
+      'An agentic workflow for triaging, enriching and resolving enterprise requests. Grounded retrieval, tool use and human approvals keep every action useful, auditable and under control.',
+    stack: ['LangGraph', 'FastAPI', 'RAG', 'ServiceNow', 'Azure AI Search'],
+    outcome: 'Request triage · Knowledge retrieval · Human approvals',
   },
   {
     number: '02',
-    title: 'SmartPDF QA Assistant',
-    subtitle: 'Retrieval-Augmented Generation',
+    name: 'AI-Powered CI/CD Root Cause Analysis',
+    type: 'DEVELOPER EXPERIENCE · MULTI-AGENT SYSTEM',
     description:
-      'Developed a document question-answering application that allows users to upload PDF files and ask questions using a retrieval-based AI workflow.',
-    technologies: [
-      'Python',
-      'Streamlit',
-      'LangChain',
-      'OpenAI',
-      'FAISS',
-      'PyPDF2',
-    ],
-    highlights: [
-      'Extracted and processed PDF content.',
-      'Created document chunks for retrieval.',
-      'Generated embeddings and stored them in FAISS.',
-      'Used a retrieval-based question-answering workflow to answer user queries.',
-    ],
-    category: 'Personal Project',
+      'A coordinated AI workflow that investigates failed CI/CD pipelines, connects errors to relevant engineering context and gives teams clear, evidence-led remediation guidance.',
+    stack: ['LangGraph', 'Azure OpenAI', 'FastAPI', 'GitLab API', 'React'],
+    outcome: 'Failure analysis · Incident correlation · Fix recommendations',
   },
   {
     number: '03',
-    title: 'Data Analytics Dashboard',
-    subtitle: 'Interactive Data Exploration',
+    name: 'AI Personal Finance Planner',
+    type: 'MULTI-AGENT SYSTEM · PERSONALIZATION',
     description:
-      'Created a Streamlit dashboard for exploring CSV datasets and presenting useful data insights through interactive visualizations.',
-    technologies: ['Python', 'Streamlit', 'Pandas', 'Matplotlib'],
-    highlights: [
-      'Loaded and processed CSV datasets using Pandas.',
-      'Presented dataset summaries and visualizations.',
-      'Created an interactive interface for data exploration.',
-    ],
-    category: 'Personal Project',
+      'A personal planning experience that turns financial goals and user context into practical, tailored savings and investment guidance through coordinated specialist agents.',
+    stack: ['Python', 'LangGraph', 'GPT-4.1', 'RAG', 'React'],
+    outcome: 'Financial profiles · Goal-based plans · Risk-aware guidance',
   },
   {
     number: '04',
-    title: 'Airline Tweet Sentiment Analysis',
-    subtitle: 'Natural Language Processing',
+    name: 'Agentic AI-Powered SLA Breach & Credit Recovery Platform',
+    type: 'AGENTIC AI · OPERATIONS',
     description:
-      'Built a sentiment analysis project using a pretrained transformer model to classify text sentiment.',
-    technologies: ['Python', 'Hugging Face', 'Transformers', 'NLP'],
-    highlights: [
-      'Used a pretrained DistilBERT sentiment pipeline.',
-      'Processed text input and generated sentiment predictions.',
-      'Explored transformer-based NLP inference.',
-    ],
-    category: 'Personal Project',
+      'An operations platform concept for detecting SLA risk, assembling supporting evidence and coordinating credit recovery through governed, human-supervised workflows.',
+    stack: ['LLMs', 'Agentic workflows', 'FastAPI', 'Enterprise APIs'],
+    outcome: 'Risk detection · Evidence synthesis · Recovery workflows',
   },
-]
+];
 
-const certifications = [
+const capabilities: Capability[] = [
   {
-    name: 'Microsoft Certified: Azure AI Fundamentals',
-    detail: 'Microsoft',
+    icon: Workflow,
+    title: 'AGENTIC SYSTEMS',
+    body: 'LangChain, LangGraph, multi-agent orchestration, tool calling and human-in-the-loop workflows.',
   },
   {
-    name: 'Microsoft Certified: Azure Fundamentals',
-    detail: 'Microsoft',
+    icon: Database,
+    title: 'RETRIEVAL & KNOWLEDGE',
+    body: 'RAG pipelines, Azure AI Search, vector retrieval, grounding and enterprise knowledge integration.',
   },
   {
-    name: 'NextGen AI — Agents in Action',
-    detail: 'UBS Certificate of Achievement',
+    icon: Cpu,
+    title: 'LLM APPLICATIONS',
+    body: 'Azure OpenAI, prompt engineering, structured outputs, evaluation and production-minded AI.',
   },
   {
-    name: 'Introduction to GitHub Copilot',
-    detail: 'GitHub',
+    icon: Layers3,
+    title: 'ENGINEERING & DELIVERY',
+    body: 'Python, FastAPI, React, TypeScript, Docker, Kubernetes and Azure.',
   },
-  {
-    name: 'Boost Your Productivity with GitHub Copilot',
-    detail: 'GitHub',
-  },
-  {
-    name: 'AI For Everyone',
-    detail: 'DeepLearning.AI',
-  },
-  {
-    name: 'GitLab CI Fundamentals',
-    detail: 'GitLab',
-  },
-  {
-    name: 'Agile Fundamentals',
-    detail: 'Professional Learning',
-  },
-]
+];
+
+const matrix = [
+  { title: 'BUILD', items: 'Python / FastAPI / React / TypeScript' },
+  { title: 'ORCHESTRATE', items: 'LangChain / LangGraph / LLM tool calling' },
+  { title: 'RETRIEVE', items: 'RAG / Azure AI Search / vector stores' },
+  { title: 'SHIP', items: 'Docker / Kubernetes / Azure / CI/CD' },
+];
+
+function SectionHeading({
+  eyebrow,
+  title,
+  accent,
+  index,
+  id,
+}: {
+  eyebrow: string;
+  title: string;
+  accent: string;
+  index: string;
+  id: string;
+}) {
+  return (
+    <ScrollReveal>
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">{eyebrow}</p>
+          <h2 id={id}>
+            {title} <em>{accent}</em>
+          </h2>
+        </div>
+        <span className="section-index">{index}</span>
+      </div>
+    </ScrollReveal>
+  );
+}
+
+function ProjectCard({ project, index }: { project: Project; index: number }) {
+  return (
+    <ScrollReveal className="project-reveal" delay={index * 0.1}>
+      <article className="project-card">
+        <div className="project-number">{project.number}</div>
+        <div className="project-main">
+          <span className="project-type">{project.type}</span>
+          <h3>{project.name}</h3>
+          <div className="project-route">
+            <span>REQUEST / ROUTE</span>
+            <AnimatedArrow
+              viewBox="0 0 160 24"
+              path="M 4 18 C 40 18 42 5 78 5 S 116 19 156 9"
+              duration={5 + index * 0.4}
+              delay={index * 0.18}
+            />
+            <span>CONTEXT / ACTION</span>
+          </div>
+          <p>{project.description}</p>
+          <div className="tags" aria-label="Technology stack">
+            {project.stack.map((technology) => (
+              <span key={technology}>{technology}</span>
+            ))}
+          </div>
+          <div className="project-outcome">
+            <span>CORE CAPABILITIES</span>
+            {project.outcome}
+          </div>
+        </div>
+        <a
+          className="project-arrow"
+          href={`mailto:${email}?subject=${encodeURIComponent(`Project details: ${project.name}`)}`}
+          aria-label={`Ask Saiteja about ${project.name}`}
+        >
+          <ArrowUpRight aria-hidden="true" />
+        </a>
+      </article>
+    </ScrollReveal>
+  );
+}
+
+function SiteHeader({
+  active,
+  menuOpen,
+  onClose,
+  onToggle,
+}: {
+  active: string;
+  menuOpen: boolean;
+  onClose: () => void;
+  onToggle: () => void;
+}) {
+  return (
+    <header className="topbar">
+      <a className="brand" href="#home" onClick={onClose} aria-label="Saiteja Atkapuram, home">
+        <span className="brand-mark" aria-hidden="true">
+          S<span>.</span>
+        </span>
+        <span>
+          SAI TEJA<span className="brand-sub"> / AI ENGINEER</span>
+        </span>
+      </a>
+      <button
+        className="menu-toggle"
+        type="button"
+        aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+        aria-expanded={menuOpen}
+        aria-controls="primary-navigation"
+        onClick={onToggle}
+      >
+        {menuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+      </button>
+      <nav
+        className={menuOpen ? 'nav-links open' : 'nav-links'}
+        id="primary-navigation"
+        aria-label="Main navigation"
+      >
+        {navItems.map((item) => (
+          <a
+            key={item.id}
+            className={active === item.id ? 'active' : ''}
+            href={`#${item.id}`}
+            aria-current={active === item.id ? 'location' : undefined}
+            onClick={onClose}
+          >
+            {item.label}
+            {active === item.id && (
+              <motion.span
+                className="nav-indicator"
+                layoutId="active-navigation-indicator"
+                transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                aria-hidden="true"
+              />
+            )}
+          </a>
+        ))}
+        <a
+          className="nav-resume"
+          href={resumeUrl}
+          target="_blank"
+          rel="noreferrer"
+          onClick={onClose}
+        >
+          RESUME <ArrowUpRight size={13} aria-hidden="true" />
+        </a>
+        <a className="nav-cta" href={`mailto:${email}`} onClick={onClose}>
+          LET&apos;S TALK <ArrowUpRight size={14} aria-hidden="true" />
+        </a>
+      </nav>
+    </header>
+  );
+}
+
+function HeroIllustration() {
+  return (
+    <div className="hero-art" role="img" aria-label="Abstract AI system visualization">
+      <div className="art-grid" aria-hidden="true" />
+      <div className="art-frame">
+        <div className="frame-top">
+          <span>FIG. 01 / SYSTEMS THINKING</span>
+          <span>AI—26</span>
+        </div>
+        <div className="hero-system-map" aria-label="AI agent to retrieval to language model">
+          <AnimatedArrow
+            className="hero-system-flow"
+            viewBox="0 0 240 180"
+            path="M 30 55 C 65 55 69 55 95 55 S 151 55 177 55 C 202 55 204 117 178 117 S 122 117 95 117"
+            duration={6.6}
+          />
+          <div className="system-node system-node-agent">
+            <span className="system-node-dot" />
+            <strong>AI AGENT</strong>
+            <small>PLAN / ROUTE</small>
+          </div>
+          <div className="system-node system-node-rag">
+            <span className="system-node-dot" />
+            <strong>RAG ENGINE</strong>
+            <small>RETRIEVE / GROUND</small>
+          </div>
+          <div className="system-node system-node-llm">
+            <span className="system-node-dot" />
+            <strong>LLM CORE</strong>
+            <small>REASON / RESPOND</small>
+          </div>
+        </div>
+        <div className="frame-bottom">
+          <span>REASON</span>
+          <span className="red-line" />
+          <span>RETRIEVE</span>
+          <span className="red-line" />
+          <span>EXECUTE</span>
+        </div>
+      </div>
+      <div className="art-caption">
+        FROM MODEL TO MEANINGFUL OUTCOME <span aria-hidden="true">↗</span>
+      </div>
+    </div>
+  );
+}
+
+function SiteFooter() {
+  return (
+    <footer className="footer section-wrap">
+      <a className="brand" href="#home" aria-label="Saiteja Atkapuram, back to top">
+        <span className="brand-mark" aria-hidden="true">
+          S<span>.</span>
+        </span>
+        <span>
+          SAI TEJA<span className="brand-sub"> / AI ENGINEER</span>
+        </span>
+      </a>
+      <span className="footer-note">DESIGNED WITH INTENT. BUILT TO EVOLVE.</span>
+      <div className="socials" aria-label="Social and contact links">
+        <a href={resumeUrl} target="_blank" rel="noreferrer">
+          Resume <ArrowUpRight aria-hidden="true" />
+        </a>
+        <a href="https://github.com/Saiteja137" target="_blank" rel="noreferrer">
+          GitHub <ArrowUpRight aria-hidden="true" />
+        </a>
+        <a
+          href="https://www.linkedin.com/in/saitheja-atkapuram/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          LinkedIn <ArrowUpRight aria-hidden="true" />
+        </a>
+        <a href={`mailto:${email}`}>
+          Email
+          <Mail aria-hidden="true" />
+        </a>
+      </div>
+      <ParticleOrbit />
+      <span className="copyright">© 2026 SAI TEJA ATKAPURAM</span>
+    </footer>
+  );
+}
 
 function App() {
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [active, setActive] = useState('home');
 
-  const closeMenu = () => setMenuOpen(false)
+  useEffect(() => {
+    const sections = navItems
+      .map(({ id }) => document.getElementById(id))
+      .filter((section): section is HTMLElement => section !== null);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleSections = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        const visibleId = visibleSections[0]?.target.id;
+        if (visibleId) setActive(visibleId);
+      },
+      { rootMargin: '-22% 0px -63% 0px', threshold: [0, 0.1, 0.3, 0.6] },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    };
+    document.addEventListener('keydown', closeOnEscape);
+    return () => document.removeEventListener('keydown', closeOnEscape);
+  }, [menuOpen]);
+
+  const closeMenu = () => setMenuOpen(false);
 
   return (
-    <div className="portfolio">
-      <header className="navbar">
-        <a href="#home" className="brand" onClick={closeMenu}>
-          <span className="brand-mark">ST</span>
-          <span>Sai Teja</span>
-        </a>
-
-        <button
-          className="menu-toggle"
-          aria-label="Toggle navigation"
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? '✕' : '☰'}
-        </button>
-
-        <nav className={menuOpen ? 'nav-links open' : 'nav-links'}>
-          {['About', 'Skills', 'Experience', 'Projects', 'Certifications', 'Contact'].map(
-            (item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                onClick={closeMenu}
-              >
-                {item}
-              </a>
-            ),
-          )}
-          <a
-            className="nav-cta"
-            href={profile.linkedin}
-            target="_blank"
-            rel="noreferrer"
-            onClick={closeMenu}
-          >
-            Let's Connect ↗
-          </a>
-        </nav>
-      </header>
-
-      <main>
-        <section id="home" className="hero section-container">
-          <div className="hero-content">
-            <div className="availability">
-              <span className="availability-dot" />
-              AI ENGINEER · 1 YEAR EXPERIENCE
-            </div>
-
-            <p className="eyebrow">HELLO, I'M</p>
-            <h1>
-              {profile.name}
-              <span className="hero-gradient">.</span>
+    <div className="site-shell">
+      <ScrollProgress />
+      <a className="skip-link" href="#main-content">
+        Skip to content
+      </a>
+      <div className="ambient ambient-one" aria-hidden="true" />
+      <div className="ambient ambient-two" aria-hidden="true" />
+      <SiteHeader
+        active={active}
+        menuOpen={menuOpen}
+        onClose={closeMenu}
+        onToggle={() => setMenuOpen((open) => !open)}
+      />
+      <main id="main-content">
+        <section className="hero section-wrap" id="home" aria-labelledby="hero-title">
+          <div className="hero-topline">
+            <span>
+              <i className="status-dot" aria-hidden="true" /> AI ENGINEER / ENTERPRISE AI SYSTEMS
+            </span>
+            <span>PORTFOLIO / 2026</span>
+          </div>
+          <div className="hero-title-wrap">
+            <p className="eyebrow">ENGINEERING INTELLIGENCE INTO REAL-WORLD SYSTEMS</p>
+            <h1 className="outline-title" id="hero-title">
+              PORTFOLIO<span className="title-dot">.</span>
             </h1>
-
-            <h2>
-              Building intelligent systems with{' '}
-              <span className="hero-gradient">Agentic AI</span>
-              <br />
-              and Generative AI.
-            </h2>
-
-            <p className="hero-description">
-              AI Engineer focused on building AI-powered applications,
-              agentic workflows, retrieval-augmented generation, and
-              enterprise automation using modern AI frameworks and cloud
-              technologies.
-            </p>
-
-            <div className="hero-actions">
-              <a className="button button-primary" href="#projects">
-                Explore My Work <span>↗</span>
-              </a>
-              <a
-                className="button button-secondary"
-                href="/resume.pdf"
-                target="_blank"
-                rel="noreferrer"
-              >
-                View Resume ↓
-              </a>
-            </div>
-
-            <div className="social-links">
-              <a href={profile.github} target="_blank" rel="noreferrer">
-                GitHub ↗
-              </a>
-              <a href={profile.linkedin} target="_blank" rel="noreferrer">
-                LinkedIn ↗
-              </a>
-              <a href={`mailto:${profile.email}`}>Email ↗</a>
-            </div>
           </div>
-
-          <div className="hero-visual">
-            <div className="visual-glow" />
-            <div className="orbit orbit-one" />
-            <div className="orbit orbit-two" />
-
-            <div className="profile-card">
-              <div className="profile-card-top">
-                <span className="window-dot purple" />
-                <span className="window-dot blue" />
-                <span className="window-dot pink" />
-                <span className="card-label">AI ENGINEER</span>
-              </div>
-
-              <div className="profile-avatar">ST</div>
-              <h3>Sai Teja</h3>
-              <p>Agentic AI · RAG · LLMs</p>
-
-              <div className="mini-stats">
-                <div>
-                  <strong>1+</strong>
-                  <span>Year Exp.</span>
-                </div>
-                <div>
-                  <strong>AI</strong>
-                  <span>Engineering</span>
-                </div>
-                <div>
-                  <strong>RAG</strong>
-                  <span>Applications</span>
-                </div>
-              </div>
-
-              <div className="profile-card-footer">
-                <span className="footer-status" />
-                Building AI solutions
+          <div className="hero-grid">
+            <div className="hero-intro">
+              <div className="name-chip">HELLO, I&apos;M</div>
+              <h2>
+                Saiteja<span>.</span>
+              </h2>
+              <p className="hero-role">AI ENGINEER <b>·</b> AGENTIC AI <b>·</b> RAG SYSTEMS</p>
+              <p className="hero-copy">
+                I build production-minded AI applications that connect language models, tools and
+                enterprise knowledge — turning complex workflows into useful, reliable products.
+              </p>
+              <div className="hero-actions">
+                <MagneticLink className="button button-red" href="#deployments">
+                  EXPLORE MY WORK <ArrowUpRight size={16} aria-hidden="true" />
+                </MagneticLink>
+                <MagneticLink
+                  className="button button-quiet"
+                  href={resumeUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  ariaLabel="View Saiteja Atkapuram's resume in Google Drive"
+                >
+                  VIEW RESUME <ArrowUpRight size={15} aria-hidden="true" />
+                </MagneticLink>
               </div>
             </div>
-
-            <div className="floating-chip chip-top">
-              <span>✦</span> LangGraph
-            </div>
-            <div className="floating-chip chip-bottom">
-              <span>⌘</span> RAG Systems
-            </div>
+            <HeroIllustration />
           </div>
-
-          <a className="scroll-indicator" href="#about">
-            <span /> Scroll to explore
+          <a className="scroll-cue" href="#about">
+            <span className="scroll-line" aria-hidden="true" /> SCROLL TO EXPLORE{' '}
+            <ArrowDown size={13} aria-hidden="true" />
           </a>
+          <div className="hero-coordinate" aria-hidden="true">
+            <span>17° 23&apos; 45.6&quot; N</span>
+            <span>AI / SYSTEMS / 2026</span>
+          </div>
         </section>
 
-        <section id="about" className="section-container section-block">
-          <div className="section-heading">
-            <span className="section-number">01 / ABOUT</span>
-            <h2>
-              Turning ideas into
-              <br />
-              <span className="hero-gradient">intelligent solutions.</span>
-            </h2>
-          </div>
-
+        <section className="about section-wrap" id="about" aria-labelledby="about-title">
+          <SectionHeading
+            eyebrow="01 / THE THINKING BEHIND THE BUILD"
+            title="Background &"
+            accent="Philosophy"
+            index="01 — 05"
+            id="about-title"
+          />
           <div className="about-grid">
-            <div className="about-copy">
+            <ScrollReveal className="about-statement">
+              <span className="quote-mark" aria-hidden="true">
+                “
+              </span>
+              <h3>
+                Useful AI is not just about a powerful model. It is about the{' '}
+                <em>system around it.</em>
+              </h3>
               <p>
-                I'm an AI Engineer with around one year of professional
-                experience working on AI-powered enterprise applications
-                and automation.
+                With experience delivering enterprise AI, I focus on what makes it practical: clear
+                workflows, relevant context, dependable integrations and thoughtful safeguards.
               </p>
-              <p>
-                My work focuses on Agentic AI, Retrieval-Augmented
-                Generation (RAG), LLM integration, and building practical
-                AI workflows using Python, LangChain, LangGraph, FastAPI,
-                and Azure AI services.
-              </p>
-              <p>
-                At UBS, I contributed to an enterprise Request Management
-                Service designed to automate service request triage,
-                investigation, and resolution through AI agents and
-                knowledge-driven workflows.
-              </p>
-              <p>
-                I enjoy learning new AI technologies and turning them
-                into reliable, useful applications.
-              </p>
-            </div>
-
-            <div className="about-cards">
-              <div className="info-card">
-                <span className="info-icon">⌘</span>
-                <span className="info-label">FOCUS</span>
-                <h3>Agentic AI & RAG</h3>
-                <p>Intelligent workflows and knowledge-based systems</p>
+            </ScrollReveal>
+            <ScrollReveal className="about-details" delay={0.14}>
+              <div className="philosophy-rail">
+                <span>PROBLEM</span>
+                <AnimatedArrow
+                  viewBox="0 0 500 30"
+                  path="M 4 15 C 110 15 120 4 208 15 S 334 26 496 15"
+                  duration={6}
+                />
+                <span>USEFUL AI</span>
+                <i className="coordinate-tag">35.676 / 139.650</i>
               </div>
-              <div className="info-card">
-                <span className="info-icon">⚡</span>
-                <span className="info-label">EXPERIENCE</span>
-                <h3>1 Year</h3>
-                <p>AI engineering and enterprise automation</p>
+              <div className="detail-row">
+                <span>01 / APPROACH</span>
+                <p>
+                  Start with the problem. Design the workflow. Choose the simplest architecture
+                  that solves it.
+                </p>
               </div>
-              <div className="info-card">
-                <span className="info-icon">◎</span>
-                <span className="info-label">LOCATION</span>
-                <h3>Hyderabad, India</h3>
-                <p>Open to AI engineering opportunities</p>
+              <div className="detail-row">
+                <span>02 / PRINCIPLE</span>
+                <p>
+                  Ground outputs in trusted knowledge, validate actions and keep people in control
+                  where it matters.
+                </p>
               </div>
-              <div className="info-card">
-                <span className="info-icon">✧</span>
-                <span className="info-label">INTERESTS</span>
-                <h3>Generative AI</h3>
-                <p>LLMs, AI agents, cloud and automation</p>
+              <div className="detail-row">
+                <span>03 / FOCUS</span>
+                <p>
+                  Agentic AI, retrieval-augmented generation and production-ready software
+                  engineering.
+                </p>
               </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="skills" className="section-container section-block">
-          <div className="section-heading">
-            <span className="section-number">02 / SKILLS</span>
-            <h2>
-              Technologies I
-              <br />
-              <span className="hero-gradient">work with.</span>
-            </h2>
-            <p className="section-description">
-              Tools and technologies used to build AI applications,
-              intelligent workflows, and production-oriented solutions.
-            </p>
-          </div>
-
-          <div className="skills-grid">
-            {skills.map((skill, index) => (
-              <article className="skill-card" key={skill.title}>
-                <div className="skill-card-top">
-                  <span className="skill-index">0{index + 1}</span>
-                  <span className="skill-symbol">✦</span>
+              <div className="about-stats">
+                <div>
+                  <strong>
+                    04<span>+</span>
+                  </strong>
+                  <small>FEATURED BUILDS</small>
                 </div>
-                <h3>{skill.title}</h3>
-                <div className="skill-tags">
-                  {skill.items.map((item) => (
-                    <span className="skill-tag" key={item}>
-                      {item}
-                    </span>
-                  ))}
+                <div>
+                  <strong>07</strong>
+                  <small>SYSTEM LAYERS</small>
                 </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section id="experience" className="section-container section-block">
-          <div className="section-heading">
-            <span className="section-number">03 / EXPERIENCE</span>
-            <h2>
-              Where I've
-              <br />
-              <span className="hero-gradient">made an impact.</span>
-            </h2>
-          </div>
-
-          <article className="experience-card">
-            <div className="experience-top">
-              <div>
-                <span className="experience-badge">PROFESSIONAL EXPERIENCE</span>
-                <h3>AI Engineer</h3>
-                <p className="company-name">UBS</p>
+                <div>
+                  <strong>∞</strong>
+                  <small>ITERATION MINDSET</small>
+                </div>
               </div>
-              <span className="experience-duration">Around 1 Year</span>
-            </div>
-
-            <div className="experience-divider" />
-
-            <h4>Request Management Service — Agentic AI Enterprise Automation</h4>
-            <p className="experience-description">
-              Contributed to an AI-powered enterprise service that
-              automates triage, enrichment, investigation, and resolution
-              of service requests across Atlas and ServiceNow.
-            </p>
-
-            <ul className="experience-list">
-              <li>
-                Worked on four agentic AI workflows using LangChain and
-                LangGraph for enterprise request automation.
-              </li>
-              <li>
-                Contributed to triage and investigation agents using
-                GPT-based tool and function calling.
-              </li>
-              <li>
-                Integrated retrieval workflows with Atlas Knowledge Base,
-                Confluence, and Azure AI Search.
-              </li>
-              <li>
-                Worked on reusable AI skills and knowledge-driven
-                automation capabilities.
-              </li>
-              <li>
-                Supported human-in-the-loop approvals through Microsoft
-                Teams and auditable execution workflows.
-              </li>
-              <li>
-                Contributed to evaluation and observability using
-                DeepEval, OpenTelemetry, and Azure Monitor.
-              </li>
-              <li>
-                Participated in end-to-end production release activities,
-                including 20 weekly production releases.
-              </li>
-            </ul>
-
-            <div className="experience-tech">
-              {[
-                'Python',
-                'FastAPI',
-                'LangChain',
-                'LangGraph',
-                'RAG',
-                'Azure OpenAI',
-                'PostgreSQL',
-                'Docker',
-                'AKS',
-              ].map((tech) => (
-                <span key={tech}>{tech}</span>
-              ))}
-            </div>
-          </article>
-        </section>
-
-        <section id="projects" className="section-container section-block">
-          <div className="section-heading">
-            <span className="section-number">04 / PROJECTS</span>
-            <h2>
-              Selected
-              <br />
-              <span className="hero-gradient">work.</span>
-            </h2>
-            <p className="section-description">
-              AI engineering projects focused on enterprise automation,
-              retrieval-based applications, and data-driven solutions.
-            </p>
-          </div>
-
-          <div className="projects-grid">
-            {projects.map((project) => (
-              <article className="project-card" key={project.number}>
-                <div className="project-card-top">
-                  <span className="project-number">{project.number}</span>
-                  <span className="project-category">{project.category}</span>
-                </div>
-
-                <div className="project-icon">
-                  {project.number === '01'
-                    ? '✧'
-                    : project.number === '02'
-                      ? '⌕'
-                      : project.number === '03'
-                        ? '▥'
-                        : '◎'}
-                </div>
-
-                <h3>{project.title}</h3>
-                <p className="project-subtitle">{project.subtitle}</p>
-                <p className="project-description">{project.description}</p>
-
-                <div className="project-highlights">
-                  <h4>Key Contributions</h4>
-                  <ul>
-                    {project.highlights.map((highlight) => (
-                      <li key={highlight}>{highlight}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="project-tech">
-                  {project.technologies.map((tech) => (
-                    <span key={tech}>{tech}</span>
-                  ))}
-                </div>
-              </article>
-            ))}
+            </ScrollReveal>
           </div>
         </section>
 
         <section
-          id="certifications"
-          className="section-container section-block"
+          className="deployments section-wrap"
+          id="deployments"
+          aria-labelledby="deployments-title"
         >
-          <div className="section-heading">
-            <span className="section-number">05 / CERTIFICATIONS</span>
-            <h2>
-              Learning &
-              <br />
-              <span className="hero-gradient">certifications.</span>
-            </h2>
-          </div>
-
-          <div className="certifications-grid">
-            {certifications.map((cert, index) => (
-              <article className="cert-card" key={cert.name}>
-                <div className="cert-icon">✦</div>
-                <div className="cert-content">
-                  <span className="cert-number">
-                    CERTIFICATION / 0{index + 1}
-                  </span>
-                  <h3>{cert.name}</h3>
-                  <p>{cert.detail}</p>
-                </div>
-                <span className="cert-arrow">↗</span>
-              </article>
+          <SectionHeading
+            eyebrow="02 / SELECTED WORK & EXPERIMENTS"
+            title="Flagship"
+            accent="Deployments"
+            index="04 PROJECTS"
+            id="deployments-title"
+          />
+          <p className="section-lede">
+            Four AI systems exploring how intelligent workflows can solve concrete problems — from
+            enterprise service automation to more helpful personal finance.
+          </p>
+          <div className="project-list">
+            {projects.map((project, index) => (
+              <ProjectCard key={project.number} project={project} index={index} />
             ))}
           </div>
         </section>
 
-        <section id="contact" className="section-container section-block">
-          <div className="contact-panel">
-            <span className="section-number">06 / CONTACT</span>
-            <h2>
-              Let's build
-              <br />
-              something <span className="hero-gradient">intelligent.</span>
-            </h2>
-            <p>
-              Interested in AI engineering opportunities, Generative AI,
-              Agentic AI, or building practical AI applications?
-              Let's connect.
-            </p>
+        <section className="system section-wrap" id="system" aria-labelledby="system-title">
+          <SectionHeading
+            eyebrow="03 / REFERENCE ARCHITECTURE"
+            title="SAAI — 7 Layer"
+            accent="Autonomous AI Ecosystem"
+            index="CONCEPT MODEL"
+            id="system-title"
+          />
+          <p className="section-lede">
+            Seven connected layers carry an idea from human intent through grounded reasoning and
+            approved action to continuous evaluation.
+          </p>
+          <ScrollReveal className="architecture-reveal">
+            <ArchitectureDiagram />
+          </ScrollReveal>
+        </section>
 
-            <a className="button button-primary" href={`mailto:${profile.email}`}>
-              Get in Touch ↗
-            </a>
+        <section
+          className="matrix-section section-wrap"
+          id="matrix"
+          aria-labelledby="matrix-title"
+        >
+          <SectionHeading
+            eyebrow="04 / THE ENGINEERING TOOLKIT"
+            title="The System"
+            accent="Matrix"
+            index="CAPABILITIES"
+            id="matrix-title"
+          />
+          <div className="capability-field">
+            <AnimatedArrow
+              className="matrix-flow"
+              viewBox="0 0 1000 90"
+              path="M 6 65 C 140 65 146 20 270 20 S 420 75 512 54 S 670 22 768 52 S 908 72 994 28"
+              duration={8}
+            />
+            <div className="capability-grid">
+              {capabilities.map(({ icon: Icon, title, body }, index) => (
+                <ScrollReveal className="capability-reveal" delay={index * 0.12} key={title}>
+                  <article className="capability">
+                    <span className="cap-icon">
+                      <Icon aria-hidden="true" />
+                    </span>
+                    <span className="cap-index">0{index + 1}</span>
+                    <h3>{title}</h3>
+                    <p>{body}</p>
+                  </article>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+          <div className="matrix-strip">
+            {matrix.map(({ title, items }, index) => (
+              <ScrollReveal className="matrix-cell" delay={index * 0.08} key={title}>
+                <div>
+                  <span>{title}</span>
+                  <p>{items}</p>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </section>
 
-            <div className="contact-links">
-              <a href={profile.linkedin} target="_blank" rel="noreferrer">
-                LinkedIn ↗
-              </a>
-              <a href={profile.github} target="_blank" rel="noreferrer">
-                GitHub ↗
-              </a>
-              <a href={`mailto:${profile.email}`}>Email ↗</a>
+        <section className="contact section-wrap" id="contact" aria-labelledby="contact-title">
+          <div className="contact-kicker">
+            <span className="status-dot" aria-hidden="true" /> END OF TRANSMISSION / BEGINNING OF
+            SOMETHING NEW
+          </div>
+          <div className="contact-content">
+            <div>
+              <p className="eyebrow">05 / HAVE A CHALLENGE IN MIND?</p>
+              <h2 id="contact-title">
+                Let&apos;s architect
+                <br />
+                <em>something</em> extraordinary<span>.</span>
+              </h2>
+              <p className="contact-copy">
+                Have an AI use case, an engineering challenge or an opportunity to collaborate?
+                Let&apos;s turn the idea into a system that works.
+              </p>
+              <MagneticLink className="button button-red" href={`mailto:${email}`}>
+                START A CONVERSATION <ArrowUpRight size={16} aria-hidden="true" />
+              </MagneticLink>
+            </div>
+            <div className="contact-orbit" aria-hidden="true">
+              <div className="contact-ring ring-one" />
+              <div className="contact-ring ring-two" />
+              <div className="contact-ring ring-three" />
+              <div className="contact-center">
+                <Terminal size={26} />
+                <span>LET&apos;S BUILD</span>
+              </div>
+              <i />
+              <b />
             </div>
           </div>
         </section>
       </main>
-
-      <footer className="footer">
-        <a href="#home" className="footer-brand">
-          ST<span>.</span>
-        </a>
-        <p>Designed & built by {profile.name}</p>
-        <p>© {new Date().getFullYear()} · AI Engineer Portfolio</p>
-      </footer>
+      <SiteFooter />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
