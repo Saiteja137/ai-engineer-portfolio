@@ -15,10 +15,9 @@ import {
 import { motion } from 'motion/react';
 import AnimatedArrow from './components/AnimatedArrow';
 import ArchitectureDiagram from './components/ArchitectureDiagram';
-import CustomCursor from './components/CustomCursor';
 import MagneticLink from './components/MagneticLink';
+import MultiCursorController from './components/MultiCursorController';
 import ParticleOrbit from './components/ParticleOrbit';
-import PortfolioWriter from './components/PortfolioWriter';
 import ScrollProgress from './components/ScrollProgress';
 import ScrollReveal from './components/ScrollReveal';
 
@@ -384,8 +383,7 @@ function App() {
 
   return (
     <div className="site-shell">
-      <PortfolioWriter />
-      <CustomCursor />
+      <MultiCursorController />
       <ScrollProgress />
       <a className="skip-link" href="#main-content">
         Skip to content

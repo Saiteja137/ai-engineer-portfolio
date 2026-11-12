@@ -5,72 +5,70 @@
   --motion-red: #ff343b;
 }
 
-html:not(.animated-cursor-active) .custom-cursor-layer {
-  display: none;
-}
-
-.portfolio-writer {
-  position: fixed;
+.multi-cursor-layer {
+  position: absolute;
   z-index: 1998;
   inset: 0;
-  overflow: hidden;
+  overflow: visible;
   pointer-events: none;
 }
 
-.portfolio-writer-cursor {
+.multi-cursor-lane {
+  display: contents;
+}
+
+.print-cursor {
   position: fixed;
   top: 0;
   left: 0;
-  width: 19.5px;
-  height: 24px;
-  transform: translate3d(-40px, -40px, 0);
+  z-index: 2;
   opacity: 0;
-  filter: drop-shadow(0 1px 3px #000b) drop-shadow(0 0 7px #ff343b88);
-  transition: opacity 130ms ease;
+  pointer-events: none;
+  filter: drop-shadow(0 0 2px #fff8) drop-shadow(0 0 6px currentColor);
+  mix-blend-mode: screen;
   will-change: transform, opacity;
 }
 
-.portfolio-writer-cursor.is-visible {
-  opacity: 1;
-}
-
-.portfolio-writer-cursor svg {
+.print-cursor svg {
+  display: block;
   width: 100%;
   height: 100%;
   overflow: visible;
-  transform-origin: 2px 1.5px;
 }
 
-.writer-cursor-shadow {
-  fill: #070709;
-  stroke: #09090b;
-  stroke-width: 2;
-  stroke-linejoin: round;
+.print-cursor svg path:first-child {
+  fill: currentColor;
+  fill-opacity: 0.56;
+  stroke: #fff9;
+  stroke-width: 1;
 }
 
-.writer-cursor-fill {
-  fill: #f5f5f5;
-  stroke: #f5f5f5;
-  stroke-width: 0.7;
-  stroke-linejoin: round;
+.print-cursor svg path:last-child {
+  fill: #fff;
+  fill-opacity: 0.28;
+  stroke: currentColor;
+  stroke-width: 0.5;
 }
 
-.writer-cursor-accent {
-  fill: none;
-  stroke: #ff343b;
-  stroke-width: 1.55;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  filter: drop-shadow(0 0 3px #ff343b) drop-shadow(0 0 7px #ff343b88);
+.print-outline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  opacity: 0;
+  overflow: visible;
+  pointer-events: none;
+  filter: drop-shadow(0 0 4px currentColor);
+  will-change: transform, opacity;
 }
 
-html.portfolio-writing .portfolio-write-target {
+html.portfolio-writing .cursor-print-target {
   opacity: 1 !important;
   transform: none !important;
   animation: none !important;
 }
 
-html .portfolio-write-complete {
+html .cursor-print-complete {
   clip-path: none !important;
   opacity: 1 !important;
   transform: none !important;
@@ -89,184 +87,6 @@ html.portfolio-writing body {
 .matrix-section,
 .contact {
   scroll-margin-top: 95px;
-}
-
-.custom-cursor-layer {
-  position: fixed;
-  z-index: 2000;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.custom-cursor,
-.custom-cursor-trail {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 26px;
-  height: 32px;
-  opacity: 0;
-  pointer-events: none;
-  will-change: transform, opacity;
-}
-
-.custom-cursor {
-  z-index: 3;
-  transition: opacity 140ms ease;
-}
-
-.custom-cursor.is-visible,
-.custom-cursor-trail.is-visible {
-  opacity: 1;
-}
-
-.custom-cursor-arrow,
-.custom-cursor-trail svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  transform-origin: 2px 1.5px;
-}
-
-.custom-cursor-arrow {
-  position: relative;
-  z-index: 1;
-  filter: drop-shadow(0 1px 2px #000b) drop-shadow(0 0 3px #f5f5f522);
-  scale: 1;
-  transition:
-    scale 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    filter 180ms ease;
-}
-
-.cursor-arrow-shadow {
-  fill: #070709;
-  stroke: #09090b;
-  stroke-width: 2;
-  stroke-linejoin: round;
-}
-
-.cursor-arrow-fill {
-  fill: #f5f5f5;
-  stroke: #f5f5f5;
-  stroke-width: 0.7;
-  stroke-linejoin: round;
-}
-
-.cursor-arrow-accent {
-  fill: none;
-  stroke: #ff343b;
-  stroke-width: 1.55;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  filter: drop-shadow(0 0 2px #ff343b) drop-shadow(0 0 5px #ff343b88);
-}
-
-.custom-cursor-glow {
-  position: absolute;
-  z-index: 0;
-  top: -1px;
-  left: -1px;
-  width: 10px;
-  height: 10px;
-  border: 1px solid #ff343b;
-  border-radius: 50%;
-  background: #ff343b16;
-  box-shadow: 0 0 5px #ff343b99, 0 0 12px #ff343b44;
-  opacity: 0.7;
-  transform: scale(0.56);
-  transition:
-    opacity 180ms ease,
-    transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.custom-cursor-interaction {
-  position: absolute;
-  z-index: 0;
-  top: -4px;
-  left: -4px;
-  width: 16px;
-  height: 16px;
-  border: 1px solid #ff343b88;
-  border-radius: 50%;
-  opacity: 0;
-  transform: scale(0.62);
-  transition:
-    opacity 180ms ease,
-    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.custom-cursor-trail {
-  z-index: 1;
-  width: 22px;
-  height: 27px;
-  transition: opacity 200ms ease;
-}
-
-.custom-cursor-trail-one {
-  z-index: 2;
-  opacity: 0;
-}
-
-.custom-cursor-trail-two {
-  z-index: 1;
-  opacity: 0;
-}
-
-.custom-cursor-trail svg {
-  width: 22px;
-  height: 27px;
-  filter: drop-shadow(0 0 3px #ff343b44);
-}
-
-.custom-cursor-trail-one svg path {
-  fill: #ff343b22;
-  stroke: #ff565c99;
-  stroke-width: 0.8;
-}
-
-.custom-cursor-trail-two svg path {
-  fill: #f5f5f50b;
-  stroke: #f5f5f566;
-  stroke-width: 0.7;
-}
-
-.custom-cursor-trail-one.is-visible {
-  opacity: 0.36;
-}
-
-.custom-cursor-trail-two.is-visible {
-  opacity: 0.18;
-}
-
-.custom-cursor.is-interactive .custom-cursor-arrow {
-  scale: 1.12;
-  filter: drop-shadow(0 1px 2px #000b) drop-shadow(0 0 4px #ff343b66);
-}
-
-.custom-cursor.is-interactive .custom-cursor-glow {
-  opacity: 1;
-  transform: scale(0.9);
-}
-
-.custom-cursor.is-interactive .custom-cursor-interaction {
-  opacity: 0.64;
-  transform: scale(1);
-}
-
-.custom-cursor.is-pressed .custom-cursor-arrow {
-  scale: 0.84;
-}
-
-.custom-cursor.is-pressed .custom-cursor-glow {
-  transform: scale(1.05);
-}
-
-html.animated-cursor-active,
-html.animated-cursor-active body,
-html.animated-cursor-active body * {
-  cursor: none !important;
 }
 
 .scroll-progress {
@@ -1143,6 +963,10 @@ html.animated-cursor-active body * {
 }
 
 @media (max-width: 600px) {
+  .multi-cursor-layer {
+    display: none;
+  }
+
   .hero-actions {
     flex-wrap: wrap;
     gap: 8px;
@@ -1332,16 +1156,7 @@ html.animated-cursor-active body * {
     opacity: 0.2;
   }
 
-  .custom-cursor,
-  .custom-cursor-trail {
-    transition: none;
-  }
-
-  .custom-cursor-trail.motion-reduced {
-    display: none;
-  }
-
-  .portfolio-writer {
+  .multi-cursor-layer {
     display: none;
   }
 }
